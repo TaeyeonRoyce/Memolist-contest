@@ -2,15 +2,26 @@ package com.royce.memolist.memo;
 
 import static com.royce.memolist.utils.BaseResponseStatus.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcResultMatchersDsl;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.royce.memolist.memo.model.Memo;
 import com.royce.memolist.memo.model.SecretLevel;
 import com.royce.memolist.memo.model.SecretMemo;
@@ -28,9 +39,10 @@ public class MemoApiTest extends WebTest {
 		memoRepository.save(test1.toEntity());
 	}
 
+
 	@DisplayName("일반_메모_저장")
 	@Test
-	public void saveMemo() {
+	public void saveMemo() throws Exception {
 	    //given
 		String testTitle = "Title2";
 		String testDetail = "This is test memo ver.2!";
@@ -39,28 +51,13 @@ public class MemoApiTest extends WebTest {
 		MemoSaveReq memoSaveReq = new MemoSaveReq(testTitle, testDetail);
 		String url = BASE_URL + port + "/memo";
 
-		//when
-		ResponseEntity<BaseResponseEntity> response = restTemplate.postForEntity(url,
-			memoSaveReq, BaseResponseEntity.class);
-		/*
-			{
-				"isSuccess": true,
-				"code": 1000,
-				"message": "요청에 성공하였습니다.",
-				"result": {
-					"memoTitle": "Title1",
-					"memoDetail": "Hello world!",
-					"memoLength": 0,
-					"memoPwd": "",
-					"secret": false
-				}
-			}
-		 */
+	    //when
+		mvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().registerModules(new JavaTimeModule()).writeValueAsString(memoSaveReq)))
+			.andExpect(status().isOk());
 
-		//then
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(response.getBody().getMessage()).isEqualTo(SUCCESS.getMessage());
-
+	    //then
 		List<Memo> all = memoRepository.findAll();
 		Memo postedMemo = all.get(1);
 		assertThat(postedMemo.getMemoDetail()).isEqualTo(testDetail);
@@ -69,8 +66,8 @@ public class MemoApiTest extends WebTest {
 
 	@DisplayName("비밀_메모_저장")
 	@Test
-	public void saveSecretMemo() {
-		//given
+	public void saveSecretMemo() throws	Exception {
+	    //given
 		String testTitle = "Title2";
 		String testDetail = "This is test secret memo with password = password!";
 		SecretLevel testLevel = SecretLevel.HIGH;
@@ -79,17 +76,13 @@ public class MemoApiTest extends WebTest {
 		MemoSecretSaveReq memoSaveReq = new MemoSecretSaveReq(testTitle, testDetail, testLevel, testPwd);
 		String url = BASE_URL + port + "/memo/secret";
 
-		//when
-		ResponseEntity<BaseResponseEntity> response = restTemplate.postForEntity(url,
-			memoSaveReq, BaseResponseEntity.class);
-		/*
+	    //when
+		mvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().registerModules(new JavaTimeModule()).writeValueAsString(memoSaveReq)))
+			.andExpect(status().isOk());
 
-		 */
-
-		//then
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(response.getBody().getMessage()).isEqualTo(SUCCESS.getMessage());
-
+	    //then
 		List<Memo> all = memoRepository.findAll();
 		SecretMemo postedMemo = (SecretMemo)all.get(1);
 

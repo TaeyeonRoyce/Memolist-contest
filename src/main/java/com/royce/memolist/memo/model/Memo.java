@@ -6,13 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.royce.memolist.utils.BaseTimeEntity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Memo {
+public class Memo extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +37,13 @@ public class Memo {
 	@Column
 	private String memoPwd;
 
+	@Builder
+	public Memo(String memoTitle, String memoDetail, int memoLength, boolean isSecret,
+		String memoPwd) {
+		this.memoTitle = memoTitle;
+		this.memoDetail = memoDetail;
+		this.memoLength = memoLength;
+		this.isSecret = isSecret;
+		this.memoPwd = memoPwd;
+	}
 }

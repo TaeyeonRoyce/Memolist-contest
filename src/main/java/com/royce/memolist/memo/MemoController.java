@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.royce.memolist.memo.model.MemoRes;
+import com.royce.memolist.memo.model.dto.MemoRes;
+import com.royce.memolist.memo.model.dto.MemoSaveReq;
 import com.royce.memolist.utils.BaseResponseEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -24,13 +26,14 @@ public class MemoController {
 
 	//새로운 Memo작성 API
 	@PostMapping
-	public BaseResponseEntity addMemo() {
+	public BaseResponseEntity<MemoRes> addMemo(@RequestBody MemoSaveReq saveReq) {
+		MemoRes memoRes = memoService.saveMemo(saveReq);
 
-		return null;
+		return new BaseResponseEntity<>(memoRes);
 	}
 
 	//새로운 비밀 Memo작성 API
-	@PostMapping
+	@PostMapping("/secret")
 	public BaseResponseEntity addSecretMemo() {
 
 		return null;

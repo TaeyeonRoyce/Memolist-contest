@@ -1,20 +1,24 @@
 package com.royce.memolist.memo.model;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import com.royce.memolist.utils.BaseTimeEntity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@DiscriminatorColumn
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 public class Memo extends BaseTimeEntity {
 
@@ -22,7 +26,7 @@ public class Memo extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memoIdx;
 
-	@Column(name = "title")
+	@Column
 	private String memoTitle;
 
 	@Column(name = "detail", nullable = false)
@@ -34,16 +38,11 @@ public class Memo extends BaseTimeEntity {
 	@Column
 	private boolean isSecret;
 
-	@Column
-	private String memoPwd;
-
 	@Builder
-	public Memo(String memoTitle, String memoDetail, int memoLength, boolean isSecret,
-		String memoPwd) {
+	public Memo(String memoTitle, String memoDetail, int memoLength, boolean isSecret) {
 		this.memoTitle = memoTitle;
 		this.memoDetail = memoDetail;
 		this.memoLength = memoLength;
 		this.isSecret = isSecret;
-		this.memoPwd = memoPwd;
 	}
 }

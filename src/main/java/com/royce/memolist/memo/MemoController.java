@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.royce.memolist.memo.model.dto.MemoRes;
 import com.royce.memolist.memo.model.dto.MemoSaveReq;
+import com.royce.memolist.memo.model.dto.MemoSecretSaveReq;
 import com.royce.memolist.utils.BaseResponseEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,9 @@ public class MemoController {
 
 	//새로운 비밀 Memo작성 API
 	@PostMapping("/secret")
-	public BaseResponseEntity addSecretMemo() {
-
-		return null;
+	public BaseResponseEntity<MemoRes> addSecretMemo(@RequestBody MemoSecretSaveReq saveReq) {
+		MemoRes secretMemo = memoService.saveSecretMemo(saveReq);
+		return new BaseResponseEntity<>(secretMemo);
 	}
 
 	//Memo 전체 조회 API

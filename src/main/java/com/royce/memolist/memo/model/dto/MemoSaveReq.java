@@ -12,16 +12,14 @@ public class MemoSaveReq extends MemoServletDto {
 	public MemoSaveReq(String memoTitle, String memoDetail) {
 		this.memoTitle = memoTitle;
 		this.memoDetail = memoDetail;
-		this.memoLength = memoDetail.length();
 	}
 
 	public Memo toEntity() {
 		return Memo.builder()
 			.memoTitle(memoTitle)
 			.memoDetail(memoDetail)
-			.memoLength(memoLength)
+			.memoLength(memoDetail.length())
 			.isSecret(false)
-			.memoPwd("")
 			.build();
 	}
 }

@@ -1,5 +1,9 @@
 package com.royce.memolist.memo;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.royce.memolist.memo.model.Memo;
@@ -31,6 +35,17 @@ public class MemoService {
 
 		MemoRes res = new MemoRes(secretMemo);
 		return res;
+	}
+
+	public List<MemoRes> getAllMemos() {
+		List<Memo> all = memoRepository.findAll();
+
+		List<MemoRes> memoResList = new ArrayList<>();
+		for (Memo memo : all) {
+			memoResList.add(new MemoRes(memo));
+		}
+
+		return memoResList;
 	}
 
 

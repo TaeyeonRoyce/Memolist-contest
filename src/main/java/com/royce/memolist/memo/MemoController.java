@@ -42,8 +42,9 @@ public class MemoController {
 
 	//Memo 전체 조회 API
 	@GetMapping
-	public List<MemoRes> getAllMemos() {
-		return null;
+	public BaseResponseEntity<List<MemoRes>> findAllMemos() {
+		List<MemoRes> allMemos = memoService.getAllMemos();
+		return new BaseResponseEntity<>(allMemos);
 	}
 
 

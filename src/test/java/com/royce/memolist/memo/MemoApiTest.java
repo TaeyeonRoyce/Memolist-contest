@@ -3,6 +3,7 @@ package com.royce.memolist.memo;
 import static com.royce.memolist.utils.BaseResponseStatus.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcResultMatchersDsl;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,7 +44,7 @@ public class MemoApiTest extends WebTest {
 
 	@DisplayName("일반_메모_저장")
 	@Test
-	public void saveMemo() throws Exception {
+	public void saveMemoTest() throws Exception {
 	    //given
 		String testTitle = "Title2";
 		String testDetail = "This is test memo ver.2!";
@@ -66,7 +68,7 @@ public class MemoApiTest extends WebTest {
 
 	@DisplayName("비밀_메모_저장")
 	@Test
-	public void saveSecretMemo() throws	Exception {
+	public void saveSecretMemoTest() throws	Exception {
 	    //given
 		String testTitle = "Title2";
 		String testDetail = "This is test secret memo with password = password!";
@@ -82,11 +84,38 @@ public class MemoApiTest extends WebTest {
 				.content(new ObjectMapper().registerModules(new JavaTimeModule()).writeValueAsString(memoSaveReq)))
 			.andExpect(status().isOk());
 
-	    //then
+		//then
 		List<Memo> all = memoRepository.findAll();
 		SecretMemo postedMemo = (SecretMemo)all.get(1);
 
 		assertThat(postedMemo.isSecret()).isTrue();
 		assertThat(postedMemo.getMemoPwd()).isEqualTo(testPwd);
+	}
+
+	@DisplayName("전체_메모_조회")
+	@Test
+	public void getAllMemoTest() throws	Exception {
+		//given
+		String testTitle = "Title2";
+		String testDetail = "This is test secret memo with password = password!";
+		SecretLevel testLevel = SecretLevel.HIGH;
+		String testPwd = "password";
+
+		int saveCnt = 3;
+
+		MemoSecretSaveReq memoSaveReq = new MemoSecretSaveReq(testTitle, testDetail, testLevel, testPwd);
+
+		for (int i = 0; i < saveCnt; i++) {
+			memoRepository.save(memoSaveReq.toEntity());
+		}
+
+		String url = BASE_URL + port + "/memo";
+
+		//when
+		mvc.perform(get(url)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(jsonPath("$.result.length()").value(saveCnt + 1));
 	}
 }

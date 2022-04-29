@@ -1,6 +1,5 @@
 package com.royce.memolist.memo;
 
-import static com.royce.memolist.utils.BaseResponseStatus.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -8,30 +7,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.HttpStatus;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcResultMatchersDsl;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.royce.memolist.memo.model.Memo;
 import com.royce.memolist.memo.model.SecretLevel;
 import com.royce.memolist.memo.model.SecretMemo;
-import com.royce.memolist.memo.model.dto.MemoRes;
 import com.royce.memolist.memo.model.dto.MemoSaveReq;
 import com.royce.memolist.memo.model.dto.MemoSecretSaveReq;
-import com.royce.memolist.utils.BaseResponseEntity;
 
+@Transactional
 @DisplayName("Memo_API_Test")
 public class MemoApiTest extends WebTest {
 
@@ -117,5 +111,29 @@ public class MemoApiTest extends WebTest {
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(jsonPath("$.result.length()").value(saveCnt + 1));
+	}
+
+	@DisplayName("메모_단일_조회")
+	@Test
+	public void getMemoByIdTest() throws Exception {
+		//given
+		String testTitle = "Title2";
+		String testDetail = "This is test secret memo with password = password!";
+		SecretLevel testLevel = SecretLevel.HIGH;
+		String testPwd = "password";
+
+		MemoSecretSaveReq memoSaveReq = new MemoSecretSaveReq(testTitle, testDetail, testLevel, testPwd);
+		SecretMemo save = memoRepository.save(memoSaveReq.toEntity());
+		Long memoIdx = save.getMemoIdx();
+
+		String url = BASE_URL + port + "/memo/{memoIdx}";
+
+		//when
+		mvc.perform(get(url, memoIdx)
+				.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andExpect(jsonPath("$.result.memoTitle").value(testTitle))
+			.andExpect(jsonPath("$.result.memoPwd").value(testPwd));
 	}
 }

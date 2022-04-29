@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import com.royce.memolist.memo.model.dto.MemoSecretSaveReq;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +15,10 @@ import lombok.NoArgsConstructor;
 @Entity
 public class SecretMemo extends Memo {
 
-	private String memoPwd;
+	private String memoPwd = null;
 
 	@Enumerated(EnumType.STRING)
-	private SecretLevel secretLevel;
+	private SecretLevel secretLevel = null;
 
 	@Builder
 	public SecretMemo(String memoTitle, String memoDetail, int memoLength, boolean isSecret, String memoPwd,
@@ -31,5 +33,20 @@ public class SecretMemo extends Memo {
 		SecretMemoBuilder() {
 			super();
 		}
+	}
+
+	public void updateToSecret(MemoSecretSaveReq updateReq) {
+		this.memoTitle = updateReq.getMemoTitle();
+		this.memoDetail = updateReq.getMemoDetail();
+		this.memoLength = updateReq.getMemoDetail().length();
+		this.isSecret = true;
+		this.memoPwd = updateReq.getMemoPwd();
+		this.secretLevel = updateReq.getSecretLevel();
+	}
+
+	public void toNormalMemo() {
+		this.isSecret = false;
+		this.memoPwd = null;
+		this.secretLevel = null;
 	}
 }

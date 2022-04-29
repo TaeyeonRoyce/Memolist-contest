@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.royce.memolist.memo.model.dto.MemoSaveReq;
+import com.royce.memolist.memo.model.dto.MemoSecretSaveReq;
 import com.royce.memolist.utils.BaseTimeEntity;
 
 import lombok.Builder;
@@ -24,19 +26,19 @@ public class Memo extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long memoIdx;
+	protected Long memoIdx;
 
 	@Column
-	private String memoTitle;
+	protected String memoTitle;
 
 	@Column(name = "detail", nullable = false)
-	private String memoDetail;
+	protected String memoDetail;
 
 	@Column
-	private int memoLength;
+	protected int memoLength;
 
 	@Column
-	private boolean isSecret;
+	protected boolean isSecret;
 
 	@Builder
 	public Memo(String memoTitle, String memoDetail, int memoLength, boolean isSecret) {
@@ -44,5 +46,18 @@ public class Memo extends BaseTimeEntity {
 		this.memoDetail = memoDetail;
 		this.memoLength = memoLength;
 		this.isSecret = isSecret;
+	}
+
+	public void updateToSecret(MemoSecretSaveReq updateReq) {
+		this.memoTitle = updateReq.getMemoTitle();
+		this.memoDetail = updateReq.getMemoDetail();
+		this.memoLength = updateReq.getMemoDetail().length();
+		this.isSecret = true;
+	}
+
+	public void updateNormal(MemoSaveReq saveReq) {
+		this.memoTitle = saveReq.getMemoTitle();
+		this.memoDetail = saveReq.getMemoDetail();
+		this.memoLength = saveReq.getMemoDetail().length();
 	}
 }

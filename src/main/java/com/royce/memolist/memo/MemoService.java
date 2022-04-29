@@ -2,7 +2,8 @@ package com.royce.memolist.memo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import com.royce.memolist.memo.model.dto.MemoSecretSaveReq;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class MemoService {
@@ -42,11 +44,59 @@ public class MemoService {
 
 		List<MemoRes> memoResList = new ArrayList<>();
 		for (Memo memo : all) {
+			if (memo instanceof SecretMemo) {
+				memoResList.add(new MemoRes((SecretMemo)memo));
+				continue;
+			}
 			memoResList.add(new MemoRes(memo));
 		}
 
 		return memoResList;
 	}
 
+	public MemoRes getMemoById(Long memoIdx) {
+		Memo memo = memoRepository.findById(memoIdx).orElseGet(Memo::new);
+		MemoRes memoRes = new MemoRes(memo);
+		if (memo instanceof SecretMemo) {
+			return new MemoRes((SecretMemo)memo);
+		}
+		return memoRes;
+	}
+
+	public Long deleteById(Long memoIdx) {
+		memoRepository.deleteById(memoIdx);
+		return memoIdx;
+	}
+
+	//TODO : 예외처리
+	//1. 비밀 메모인지 확인
+	//2. 존재하는 메모인지 확인
+	public boolean isMatchPassword(Long memoIdx, String password) {
+		Memo memo = memoRepository.findById(memoIdx).get();
+		if (memo.isSecret() && password.equals(((SecretMemo)memo).getMemoPwd())) {
+				return true;
+			}
+
+		return false;
+	}
+
+	public MemoRes updateMemo(Long memoIdx, MemoSaveReq saveReq) {
+		Memo memo = memoRepository.findById(memoIdx).get();
+		if (memo.isSecret()) {
+			((SecretMemo)memo).toNormalMemo();
+		}
+
+		memo.updateNormal(saveReq);
+
+		return new MemoRes(memo);
+	}
+
+	public MemoRes updateSecretMemo(Long memoIdx, MemoSecretSaveReq saveReq) {
+		memoRepository.toSecretMemo(memoIdx);
+		Memo memo = memoRepository.findById(memoIdx).get();
+		memo.updateToSecret(saveReq);
+
+		return new MemoRes(memo);
+	}
 
 }

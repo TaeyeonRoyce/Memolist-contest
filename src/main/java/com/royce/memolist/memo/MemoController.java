@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.royce.memolist.memo.model.Memo;
+import com.royce.memolist.memo.model.dto.MemoPwdReq;
 import com.royce.memolist.memo.model.dto.MemoRes;
 import com.royce.memolist.memo.model.dto.MemoSaveReq;
 import com.royce.memolist.memo.model.dto.MemoSecretSaveReq;
@@ -37,6 +39,7 @@ public class MemoController {
 	@PostMapping("/secret")
 	public BaseResponseEntity<MemoRes> addSecretMemo(@RequestBody MemoSecretSaveReq saveReq) {
 		MemoRes secretMemo = memoService.saveSecretMemo(saveReq);
+
 		return new BaseResponseEntity<>(secretMemo);
 	}
 
@@ -49,26 +52,42 @@ public class MemoController {
 
 
 	//Memo 단일 조회 API
+	// TODO : 없는 ID 예외처리
 	@GetMapping("/{memoIdx}")
-	public void getSingleMemo(@PathVariable Long memoIdx) {
+	public BaseResponseEntity<MemoRes> getSingleMemo(@PathVariable Long memoIdx) {
+		MemoRes memoById = memoService.getMemoById(memoIdx);
 
+		return new BaseResponseEntity<>(memoById);
 	}
 
 	//단일 Memo 수정 API
 	@PatchMapping("/{memoIdx}")
-	public void editMemo(@PathVariable Long memoIdx) {
+	public BaseResponseEntity<MemoRes> editMemo(@PathVariable Long memoIdx, @RequestBody MemoSaveReq saveReq) {
+		MemoRes memoRes = memoService.updateMemo(memoIdx, saveReq);
 
+		return new BaseResponseEntity<>(memoRes);
+	}
+
+	//단일 Memo 수정 API
+	@PatchMapping("/{memoIdx}/secret")
+	public BaseResponseEntity<MemoRes> editSecretMemo(@PathVariable Long memoIdx, @RequestBody MemoSecretSaveReq saveReq) {
+		MemoRes memoRes = memoService.updateSecretMemo(memoIdx, saveReq);
+
+		return new BaseResponseEntity<>(memoRes);
 	}
 
 	//단일 Memo 삭제 API
+	// TODO : 없는 ID 예외처리
 	@DeleteMapping("/{memoIdx}")
-	public void deleteMemo(@PathVariable Long memoIdx) {
-
+	public BaseResponseEntity<Long> deleteMemo(@PathVariable Long memoIdx) {
+		Long deletedId = memoService.deleteById(memoIdx);
+		return new BaseResponseEntity<>(deletedId);
 	}
 
 	//비밀 Memo password 인증
 	@PostMapping("/{memoIdx}/auth")
-	public void matchPassword(@PathVariable Long memoIdx) {
-
+	public BaseResponseEntity<Boolean> matchPassword(@PathVariable Long memoIdx, @RequestBody MemoPwdReq password) {
+		String pwd = password.getPwd();
+		return new BaseResponseEntity<>(memoService.isMatchPassword(memoIdx, pwd));
 	}
 }

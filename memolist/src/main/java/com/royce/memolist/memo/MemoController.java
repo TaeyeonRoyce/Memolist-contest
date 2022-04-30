@@ -84,7 +84,7 @@ public class MemoController {
 	}
 
 	//단일 Memo 삭제 API
-	// TODO : 없는 ID 예외처리
+	// TODO : 없는 ID 예외처리 
 	@DeleteMapping("/{memoIdx}")
 	public BaseResponseEntity<Long> deleteMemo(@PathVariable Long memoIdx) {
 		Long deletedId = memoService.deleteById(memoIdx);

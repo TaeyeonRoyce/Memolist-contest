@@ -3,8 +3,9 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import MemoPreview from './MemoPreview';
 
-function Memo({key, memo}) {
+function Memo({memo}) {
 
+    const memoIdx = memo.memoIdx;
     const baseUrl = "http://localhost:9000/memo";
 
     function deleteTodo(e) {
@@ -12,16 +13,15 @@ function Memo({key, memo}) {
 
         const deleteTodo = async () =>{
         await axios
-            .delete(baseUrl + "" + memo.memoIdx);
+            .delete(baseUrl + "" + memoIdx);
         }
         deleteTodo();
         console.log("삭제완료");
     }
     return(
-        <div className="memoCotainer" key={key}>
+        <div className="memoCotainer" key={memoIdx}>
             <Link to={{
-                    pathname : `/memo/${memo.memoIdx}`,
-                    state : {memo}}}>
+                    pathname : `/memo/${memoIdx}`}} state = {{memo:memo}}>
                 <MemoPreview memo = {memo} secret= {memo.secret}/>
             </Link>
             <form className="deleteTodo" onSubmit={deleteTodo}>

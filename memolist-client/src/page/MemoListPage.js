@@ -14,7 +14,7 @@ function MainDetail(memoList) {
             </Link>
             <div className="memoListContainer">
                 {memoList.map((memo) => (
-                    <Memo key={memo.memoIdx} memo={memo}></Memo>
+                    <Memo memo={memo} key = {memo.memoIdx}></Memo>
                 ))}
             </div>
         </div>

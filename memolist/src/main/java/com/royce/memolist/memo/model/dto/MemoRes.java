@@ -12,6 +12,7 @@ public class MemoRes extends MemoServletDto {
 
 	@Builder
 	public MemoRes(Memo memoEntity) {
+		this.memoIdx = memoEntity.getMemoIdx();
 		this.memoTitle = memoEntity.getMemoTitle();
 		this.memoDetail = memoEntity.getMemoDetail();
 		this.memoLength = memoEntity.getMemoLength();
@@ -21,6 +22,7 @@ public class MemoRes extends MemoServletDto {
 
 	@Builder
 	public MemoRes(SecretMemo secretMemo) {
+		this.memoIdx = secretMemo.getMemoIdx();
 		this.memoTitle = secretMemo.getMemoTitle();
 		this.memoDetail = secretMemo.getMemoDetail();
 		this.memoLength = secretMemo.getMemoLength();

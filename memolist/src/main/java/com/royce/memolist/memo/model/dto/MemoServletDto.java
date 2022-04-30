@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class MemoServletDto {
+	protected Long memoIdx;
 	protected String memoTitle;
 	protected String memoDetail;
 	protected int memoLength;

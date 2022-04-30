@@ -72,7 +72,7 @@ public class MemoController {
 	public void editMemo(@PathVariable Long memoIdx, @RequestBody MemoSaveReq saveReq,
 		HttpServletResponse response) throws IOException {
 		memoService.updateMemo(memoIdx, saveReq);
-		response.sendRedirect("http://localhost:9000/memo/" + memoIdx);
+		// response.sendRedirect("http://localhost:9000/memo/" + memoIdx);
 	}
 
 	//Secret Memo 수정 API
@@ -80,7 +80,7 @@ public class MemoController {
 	public void editSecretMemo(@PathVariable Long memoIdx, @RequestBody MemoSecretSaveReq saveReq, HttpServletResponse response) throws
 		IOException {
 		memoService.updateSecretMemo(memoIdx, saveReq);
-		response.sendRedirect("http://localhost:9000/memo/" + memoIdx);
+		// response.sendRedirect("http://localhost:9000/memo/" + memoIdx);
 	}
 
 	//단일 Memo 삭제 API

@@ -3,6 +3,7 @@ package com.royce.memolist.memo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -80,23 +81,19 @@ public class MemoService {
 		return false;
 	}
 
-	public MemoRes updateMemo(Long memoIdx, MemoSaveReq saveReq) {
+	public void updateMemo(Long memoIdx, MemoSaveReq saveReq) {
 		Memo memo = memoRepository.findById(memoIdx).get();
 		if (memo.isSecret()) {
 			((SecretMemo)memo).toNormalMemo();
 		}
 
 		memo.updateNormal(saveReq);
-
-		return new MemoRes(memo);
 	}
 
-	public MemoRes updateSecretMemo(Long memoIdx, MemoSecretSaveReq saveReq) {
+	public void updateSecretMemo(Long memoIdx, MemoSecretSaveReq saveReq) {
 		memoRepository.toSecretMemo(memoIdx);
 		Memo memo = memoRepository.findById(memoIdx).get();
 		memo.updateToSecret(saveReq);
-
-		return new MemoRes(memo);
 	}
 
 }

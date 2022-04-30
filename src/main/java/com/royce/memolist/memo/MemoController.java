@@ -1,7 +1,14 @@
 package com.royce.memolist.memo;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -62,18 +69,18 @@ public class MemoController {
 
 	//단일 Memo 수정 API
 	@PatchMapping("/{memoIdx}")
-	public BaseResponseEntity<MemoRes> editMemo(@PathVariable Long memoIdx, @RequestBody MemoSaveReq saveReq) {
-		MemoRes memoRes = memoService.updateMemo(memoIdx, saveReq);
-
-		return new BaseResponseEntity<>(memoRes);
+	public void editMemo(@PathVariable Long memoIdx, @RequestBody MemoSaveReq saveReq,
+		HttpServletResponse response) throws IOException {
+		memoService.updateMemo(memoIdx, saveReq);
+		response.sendRedirect("http://localhost:9000/memo/" + memoIdx);
 	}
 
-	//단일 Memo 수정 API
+	//Secret Memo 수정 API
 	@PatchMapping("/{memoIdx}/secret")
-	public BaseResponseEntity<MemoRes> editSecretMemo(@PathVariable Long memoIdx, @RequestBody MemoSecretSaveReq saveReq) {
-		MemoRes memoRes = memoService.updateSecretMemo(memoIdx, saveReq);
-
-		return new BaseResponseEntity<>(memoRes);
+	public void editSecretMemo(@PathVariable Long memoIdx, @RequestBody MemoSecretSaveReq saveReq, HttpServletResponse response) throws
+		IOException {
+		memoService.updateSecretMemo(memoIdx, saveReq);
+		response.sendRedirect("http://localhost:9000/memo/" + memoIdx);
 	}
 
 	//단일 Memo 삭제 API

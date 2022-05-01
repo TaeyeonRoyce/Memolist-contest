@@ -4,9 +4,29 @@ import PageFrame from "./PageFrame";
 import axios from 'axios';
 import Memo from '../memo/Memo'
 import { useEffect, useState } from 'react';
+import { FaSearch } from "react-icons/fa";
 
 
 function MainDetail(memoList) {
+    const [searchValue, setSearchValue] = useState('');
+    const [searchMemos, setSearchMemos] = useState(memoList);
+
+    const filter = (e) => {
+        const keyword = e.target.value;
+    
+        if (keyword !== '') {
+          const results = searchMemos.filter((memo) => {
+            return memo.memoTitle.toLowerCase().startsWith(keyword.toLowerCase());
+            // Use the toLowerCase() method to make it case-insensitive
+          });
+          setSearchMemos(results);
+        } else {
+            setSearchMemos(memoList);
+          // If the text field is empty, show all memos
+        }
+    
+        setSearchValue(keyword);
+      };
 
     function deleteMemo(e, memoIdx) {
         e.preventDefault();
@@ -25,24 +45,69 @@ function MainDetail(memoList) {
         console.log("삭제완료");
     }
 
+    
 
-    return (
-        <div className="mainPageContainer">
-            <Link to="/memo/new-memo">
-                <button className="addMemoBtn"> 새로운 메모 추가하기 </button>
-            </Link>
-            <div className="memoListContainer">
-                {memoList.map((memo) => (
-                    <div key = {memo.memoIdx}>
-                        <Memo memo={memo} key = {memo.memoIdx}></Memo>
-                        <div className="deleteTodo" onClick={(e) => {deleteMemo(e, memo.memoIdx)}}>
+    if (searchValue === '') {
+        return (
+            <div className="mainPageContainer">
+                <div className="searchContainer">
+                    <FaSearch/>
+                    <input
+                        type="search"
+                        value={searchValue}
+                        onChange={filter}
+                        className="input"
+                        placeholder="search"
+                    />
+                </div>
+                <div className="memoListContainer">
+                    {memoList.map((memo) => (
+                        <div key = {memo.memoIdx} className="memoContainer">
+                            <Memo memo={memo} key = {memo.memoIdx}/>
+                            <div className="deleteTodo" onClick={(e) =>     {deleteMemo(e, memo.memoIdx)}}>
                             <button type="submit"> ❌ </button>
                         </div>
-                    </div>
-                ))}
+                    </div>))}
+                </div>
+                <Link to="/memo/new-memo">
+                    <button className="addMemoBtn"> 새로운 메모 추가하기 </button>
+                </Link>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div className="mainPageContainer">
+                <div className="searchContainer">
+                    <FaSearch/>
+                    <input
+                        type="search"
+                        value={searchValue}
+                        onChange={filter}
+                        className="input"
+                        placeholder="search"
+                    />
+                </div>
+                
+                <div className="memoListContainer">
+                    {searchMemos && searchMemos.length > 0  ? (
+                        searchMemos.map((memo) => (
+                            <div key = {memo.memoIdx} className="memoContainer">
+                                <Memo memo={memo} key = {memo.memoIdx}></Memo>
+                                <div className="deleteTodo" onClick={(e) => {deleteMemo(e, memo.memoIdx)}}>
+                                    <button type="submit"> ❌ </button>
+                                </div>
+                            </div>
+                        ))) : (
+                        <h1>No memo found!</h1>
+                    )}
+                </div>
+                <Link to="/memo/new-memo">
+                    <button className="addMemoBtn"> 새로운 메모 추가하기 </button>
+                </Link>
+            </div>
+        )
+    }
+    
 }
 
 
@@ -53,7 +118,7 @@ function MainPage() {
     const [memoList, setMemoList] = useState([]);
     useEffect(() => {
         getMemos();
-    });
+    },[]);
 
     async function getMemos() {
         await axios.get(baseurl)

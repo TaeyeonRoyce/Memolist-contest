@@ -5,10 +5,50 @@
   font-family: sans-serif;
 }
 
+button {
+  border: none;
+  cursor: pointer;
+}
+
 .container {
-  background-color: linear-gradient(rgb(183, 205, 211), rgb(188, 188, 137));
+  display: flex;
+  width: 1440px;
+  height: 764px;
+  background: linear-gradient(#caccce, #9198e5);
+  justify-content: center;
+  align-items: center;
 }
 
 .contentContainer{
-  
+  display: flex;
+  align-items: center;
+  width: 50%;
+  height: 80%;
+  margin: auto;
+  background: white;
+  border-radius: 30px;
+  padding: 10px;
+  flex-direction: row;
+}
+
+.dateContainer{
+  width: 30%;
+  font-size: 40px;
+  text-align: center;
+}
+
+.mainPageContainer {
+  width: 70%;
+  height: 100%;
+  padding : 4%;
+  display: flex;
+  flex-direction: column;
+}
+
+.memoListContainer {
+  padding-top: 12px;
+}
+
+.memoContainer {
+
 }

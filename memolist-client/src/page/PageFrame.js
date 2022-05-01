@@ -1,4 +1,5 @@
 import LocalDate from './LocalDate';
+import '../App.css';
 
 function PageFrame(props) {
     return(

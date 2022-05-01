@@ -99,7 +99,7 @@ function AddMemo() {
               (<div className="addMessage"> Create New Memo!</div>)
             }
         </div>
-        <form action="todos.html" method="post" onSubmit={secret ? addSecretMemo : addNormalMemo}>
+        <form action="" method="post" onSubmit={secret ? addSecretMemo : addNormalMemo}>
           <div className="secretCheckBox">
             <input type="checkbox" checked={secret}  onChange={(e) => checkSecretBox(e)} />
             <div>Secret Memo</div>

@@ -7,6 +7,25 @@ import { useEffect, useState } from 'react';
 
 
 function MainDetail(memoList) {
+
+    function deleteMemo(e, memoIdx) {
+        e.preventDefault();
+        console.log(e);
+        const baseUrl = "http://localhost:9000/memo";
+        const deleteMemo = async () =>{
+        await axios
+            .delete(baseUrl + "/" + memoIdx);
+        }
+        deleteMemo();
+
+        const removeMemo = memoList.find(function(memo) {return memo.memoIdx === memoIdx});
+        const index = memoList.indexOf(removeMemo);
+        if (index > -1) memoList.splice(index, 1);
+        console.log(memoList);
+        console.log("삭제완료");
+    }
+
+
     return (
         <div className="mainPageContainer">
             <Link to="/memo/new-memo">
@@ -14,7 +33,12 @@ function MainDetail(memoList) {
             </Link>
             <div className="memoListContainer">
                 {memoList.map((memo) => (
-                    <Memo memo={memo} key = {memo.memoIdx}></Memo>
+                    <div key = {memo.memoIdx}>
+                        <Memo memo={memo} key = {memo.memoIdx}></Memo>
+                        <div className="deleteTodo" onClick={(e) => {deleteMemo(e, memo.memoIdx)}}>
+                            <button type="submit"> ❌ </button>
+                        </div>
+                    </div>
                 ))}
             </div>
         </div>
@@ -29,7 +53,7 @@ function MainPage() {
     const [memoList, setMemoList] = useState([]);
     useEffect(() => {
         getMemos();
-    },[]);
+    });
 
     async function getMemos() {
         await axios.get(baseurl)

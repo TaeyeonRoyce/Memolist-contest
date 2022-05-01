@@ -3,7 +3,8 @@ import AddMemoPage from './page/AddMemoPage';
 import EditMemoPage from './page/EditMemoPage';
 import MemoDetailPage from './page/MemoDetailPage';
 import MemoListPage from "./page/MemoListPage"
-
+import "./App.css";
+import SecretMemoEnrtyPage from './page/SecretMemoEntryPage';
 
 function App() {
   return (

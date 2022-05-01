@@ -122,7 +122,7 @@ function MainPage() {
     const [memoList, setMemoList] = useState([]);
     useEffect(() => {
         getMemos();
-    },[]);
+    });
 
     async function getMemos() {
         await axios.get(baseurl)

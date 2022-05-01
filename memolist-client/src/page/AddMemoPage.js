@@ -9,6 +9,8 @@ function AddMemo() {
   
   const [memoTitle, setMemoTitle] = useState("");
   const [memoDetail, setMemoDetail] = useState("");
+
+  const [detailLength, setDetailLength] = useState(0);
   
   const [secret, setSecret] = useState(false);
   const [pwd, setPwd] = useState("");
@@ -84,6 +86,7 @@ function AddMemo() {
     function changeMemoDetail(e) {
       e.preventDefault();
       setMemoDetail(e.target.value);
+      setDetailLength(e.target.value.length);
     }
 
     function changeMemoPwd(e) {
@@ -107,16 +110,19 @@ function AddMemo() {
           <div className="addFormInputContainer">
             <div className="memoTitleForm">
               <div className="titleFormText">Title : </div>
-              <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder="Memo Title"/>
+              <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder="Memo Title" autoComplete='off'/>
             </div>
             <div className="memoDetailForm">
               <div className="detailFormText">Memo detail : </div>
               <textarea type="text" onChange={changeMemoDetail} name="memoDetail" placeholder="..."/>
+              <div className="textLength">
+                <div>length : {detailLength}</div>
+                </div>
             </div>
             {secret ? (
             <div className="memoPwd">
               <div className="pwdFormText">Memo password :  </div>
-              <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder="password"/>
+              <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder="password" autoComplete='off'/>
             </div>) : (<div></div>)}
           </div>
           <div className="buttonContainer">

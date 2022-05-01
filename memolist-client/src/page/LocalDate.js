@@ -7,14 +7,18 @@ function LocalDate() {
     let todayMonth = now.getMonth() + 1;
     let todayDate = now.getDate() > 9 ? now.getDate() : '0' + now.getDate();
     return(
-    <div className="dateContainer">
-        <div className="year"> 
-            {todayYear}
+        <div className="lefPannelContainer">
+            <h1 className="topLogo">Memo list</h1>
+            <h3 className="today"> TODAY </h3>
+            <div className="dateContainer">
+                <div className="year"> 
+                    {todayYear}
+                </div>
+                <div className="date">
+                    {todayMonth + '/'+ todayDate}
+                </div>
+            </div>
         </div>
-        <div className="date">
-            {todayMonth + '/'+ todayDate}
-        </div>
-    </div>
     )
 }
 

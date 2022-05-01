@@ -39,7 +39,8 @@ function SecretMemoEntry({memo, setPass}) {
   return (
     <div className="memoPwdEnterContainer">
       <div className="memoPwd">
-        <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={pwdHolder}/>
+        {wrong ? (<h1 className="wrongPwdText">Wrong password</h1>) : (<div className="noneDiv"></div>)}
+        <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={pwdHolder} autoComplete='off'/>
       </div>
       <div className="buttonContainer">
         <button type="submit" className="enterBtn" onClick={checkPwd}> Enter </button>

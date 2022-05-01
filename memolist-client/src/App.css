@@ -24,6 +24,7 @@ a {
   align-items: center;
 }
 
+
 .contentContainer{
   display: flex;
   align-items: center;
@@ -36,8 +37,24 @@ a {
   flex-direction: row;
 }
 
-.dateContainer{
+.lefPannelContainer {
   width: 30%;
+  height: 80%;
+  text-align: center;
+  border-right: 1px solid black;
+  display: flex;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  padding-bottom: 10%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.today {
+  margin-top: 60px;
+}
+
+.dateContainer{
   font-size: 40px;
   text-align: center;
 }
@@ -208,7 +225,7 @@ a {
   background: rgb(230, 222, 222);
   border-radius: 10px;
   padding: 10px;
-  height: 300px;
+  height: 320px;
 }
 
 .memoTitleForm {
@@ -312,4 +329,16 @@ a {
 
 .memoPwd input {
   border: 4px solid red;
+}
+
+.textLength {
+  display: flex;
+  flex-direction: row;
+  justify-items: end;
+  text-align: right;
+  right: 0;
+}
+.textLength div {
+  position: relative;
+  left: 84%;
 }

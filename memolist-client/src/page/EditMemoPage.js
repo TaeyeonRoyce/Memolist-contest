@@ -9,6 +9,8 @@ function EditMemo(memo) {
   
   const [memoTitle, setMemoTitle] = useState("");
   const [memoDetail, setMemoDetail] = useState("");
+
+  const [detailLength, setDetailLength] = useState(0);
   
   const [secret, setSecret] = useState(memo.secret);
   const [pwd, setPwd] = useState("");
@@ -84,6 +86,7 @@ function EditMemo(memo) {
     function changeMemoDetail(e) {
       e.preventDefault();
       setMemoDetail(e.target.value);
+      setDetailLength(e.target.value.length);
     }
 
     function changeMemoPwd(e) {
@@ -101,22 +104,23 @@ function EditMemo(memo) {
         </div>
         <form action="" method="post" onSubmit={secret ? editSecretMemo : editNormalTodo}>
           <div className="secretCheckBox">
-            <input type="checkbox" checked={secret}  onChange={(e) => checkSecretBox(e)} />
+            <input type="checkbox" checked={secret}  onChange={(e) => checkSecretBox(e)} autoComplete='off'/>
             <div>Secret Memo</div>
           </div>
           <div className="addFormInputContainer">
             <div className="memoTitleForm">
               <div className="titleFormText">Title : </div>
-              <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder={memo.memoTitle} value={memo.memoTitle}/>
+              <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder={memo.memoTitle}  autoComplete='off'/>
             </div>
             <div className="memoDetailForm">
               <div className="detailFormText">Memo detail : </div>
-              <textarea type="text" onChange={changeMemoDetail} name="memoDetail" placeholder={memo.memoDetail} value={memo.memoDetail}/>
+              <textarea type="text" onChange={changeMemoDetail} name="memoDetail" placeholder={memo.memoDetail}  autoComplete='off'/>
+              <div>length : {detailLength}</div>
             </div>
             {secret ? (
             <div className="memoPwd">
               <div className="pwdFormText">Memo password :  </div>
-              <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={memo.memoPwd}  value={memo.memoPwd}/>
+              <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={memo.memoPwd}  autoComplete='off'/>
             </div>) : (<div></div>)}
           </div>
           <div className="buttonContainer">

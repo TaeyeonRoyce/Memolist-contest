@@ -4,7 +4,7 @@ import MemoPreview from './MemoPreview';
 
 function Memo({memo}) {
     return(
-        <div className="memoCotainer" key={memo.memoIdx}>
+        <div className="memoContentCotainer" key={memo.memoIdx}>
             <Link to={{
                 pathname : `/memo/${memo.memoIdx}`}} state = {{memo:memo}}>
                 <MemoPreview memo = {memo} secret= {memo.secret}/>

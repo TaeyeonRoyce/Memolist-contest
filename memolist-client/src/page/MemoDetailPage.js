@@ -11,9 +11,17 @@ function MemoDetail(memo) {
         <div className="memoDetailContainer">
             {!pass && secret ? (<SecretMemoEnrtyPage memo = {memo} setPass={setPass}/>) : (
             <div>
-                <h1>{memo.memoTitle}</h1>
-                <h3>{memo.memoDetail}</h3>    
-                <div className="btnContainer">
+                <div className="memoTitleForm">
+                    <div className="titleFormText">Title : </div>
+                    <h1>{memo.memoTitle}</h1>
+                </div>
+                <div className="memoDetailViewContainer">
+                    <div className="memoDetailForm">
+                        <div className="detailFormText">Memo detail : </div>
+                        <h3>{memo.memoDetail}</h3>    
+                    </div>
+                </div>
+                <div className="buttonContainer">
                     <Link to={{
                         pathname : `/memo/${memo.memoIdx}/edit`}} state = {{memo:memo}}>
                         <button className="editBtn">
@@ -22,7 +30,7 @@ function MemoDetail(memo) {
                     </Link>
                     
                     <Link to="/memo">
-                        <button className="backwardBtn">
+                        <button className="return">
                             Backward
                         </button>
                     </Link>

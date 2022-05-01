@@ -96,28 +96,33 @@ function EditMemo(memo) {
         <div className="messageContainer">
             {added ? 
               (<div className="finishedMessage"> Memo Edit Success! </div>) :
-              (<div className="addMessage"> Create New Memo!</div>)
+              (<div className="addMessage"> Edit Memo </div>)
             }
         </div>
-        <form action="todos.html" method="post" onSubmit={secret ? editSecretMemo : editNormalTodo}>
+        <form action="" method="post" onSubmit={secret ? editSecretMemo : editNormalTodo}>
           <div className="secretCheckBox">
             <input type="checkbox" checked={secret}  onChange={(e) => checkSecretBox(e)} />
             <div>Secret Memo</div>
           </div>
-          <div className="memoTitleForm">
-            <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder={memo.memoTitle}/>
+          <div className="addFormInputContainer">
+            <div className="memoTitleForm">
+              <div className="titleFormText">Title : </div>
+              <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder={memo.memoTitle} value={memo.memoTitle}/>
+            </div>
+            <div className="memoDetailForm">
+              <div className="detailFormText">Memo detail : </div>
+              <textarea type="text" onChange={changeMemoDetail} name="memoDetail" placeholder={memo.memoDetail} value={memo.memoDetail}/>
+            </div>
+            {secret ? (
+            <div className="memoPwd">
+              <div className="pwdFormText">Memo password :  </div>
+              <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={memo.memoPwd}  value={memo.memoPwd}/>
+            </div>) : (<div></div>)}
           </div>
-          <div className="memoDetailForm">
-            <input type="text" onChange={changeMemoDetail} name="memoDetail" placeholder={memo.memoDetail}/>
-          </div>
-          {secret ? (
-          <div className="memoPwd">
-            <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={memo.memoPwd}/>
-          </div>) : (<div></div>)}
           <div className="buttonContainer">
             {added ? (
               <div></div>
-            ) : (<button type="submit" className="addTodo"> Edit </button>)}
+            ) : (<button type="submit" className="editBtn"> Edit </button>)}
             <Link to="/memo">
                 <button type="button" className="return"> Backward </button>
             </Link>

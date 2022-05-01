@@ -51,12 +51,14 @@ function MainDetail(memoList) {
         return (
             <div className="mainPageContainer">
                 <div className="searchContainer">
-                    <FaSearch/>
+                    <div className="iconBox">
+                        <FaSearch />
+                    </div>
                     <input
                         type="search"
                         value={searchValue}
                         onChange={filter}
-                        className="input"
+                        className="inputBox"
                         placeholder="search"
                     />
                 </div>
@@ -64,13 +66,13 @@ function MainDetail(memoList) {
                     {memoList.map((memo) => (
                         <div key = {memo.memoIdx} className="memoContainer">
                             <Memo memo={memo} key = {memo.memoIdx}/>
-                            <div className="deleteTodo" onClick={(e) =>     {deleteMemo(e, memo.memoIdx)}}>
+                            <div className="deleteMemo" onClick={(e) =>     {deleteMemo(e, memo.memoIdx)}}>
                             <button type="submit"> ❌ </button>
                         </div>
                     </div>))}
                 </div>
-                <Link to="/memo/new-memo">
-                    <button className="addMemoBtn"> 새로운 메모 추가하기 </button>
+                <Link to="/memo/new-memo" className="addBtnContainer">
+                    <button className="addMemoBtn"> Add Memo </button>
                 </Link>
             </div>
         )
@@ -78,12 +80,14 @@ function MainDetail(memoList) {
         return (
             <div className="mainPageContainer">
                 <div className="searchContainer">
-                    <FaSearch/>
+                <div className="iconBox">
+                        <FaSearch />
+                    </div>
                     <input
                         type="search"
                         value={searchValue}
                         onChange={filter}
-                        className="input"
+                        className="inputBox"
                         placeholder="search"
                     />
                 </div>
@@ -93,7 +97,7 @@ function MainDetail(memoList) {
                         searchMemos.map((memo) => (
                             <div key = {memo.memoIdx} className="memoContainer">
                                 <Memo memo={memo} key = {memo.memoIdx}></Memo>
-                                <div className="deleteTodo" onClick={(e) => {deleteMemo(e, memo.memoIdx)}}>
+                                <div className="deleteMemo" onClick={(e) => {deleteMemo(e, memo.memoIdx)}}>
                                     <button type="submit"> ❌ </button>
                                 </div>
                             </div>
@@ -101,8 +105,8 @@ function MainDetail(memoList) {
                         <h1>No memo found!</h1>
                     )}
                 </div>
-                <Link to="/memo/new-memo">
-                    <button className="addMemoBtn"> 새로운 메모 추가하기 </button>
+                <Link to="/memo/new-memo" className="addBtnContainer">
+                    <button className="addMemoBtn"> Add Memo </button>
                 </Link>
             </div>
         )

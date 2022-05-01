@@ -1,20 +1,28 @@
 import React from 'react';
+import { CgNotes, CgLock } from "react-icons/cg";
 
 function MemoPreview({memo, secret}) {
   return(
     <div>
       {secret ? (
-        <div className="secretMemoPreview">
-          <h3>Secret Memo</h3>
+        <div className="memoPreview">
+          <div className="memoIconContainer">
+            <CgLock className="secretIcon"/>
+          </div>
+          <h3 className="secretMemoText"> Passwrod Required</h3>
         </div>
       ) : (
-          <div className="normalMemo">
-            <h3>Normal Memo</h3>
-            <div className="memoTitle">
-              {memo.memoTitle}
+          <div className="memoPreview">
+            <div className="memoIconContainer">
+              <CgNotes className="memoIcon"/>
             </div>
-            <div className="todosDetail">
-              {memo.memoDetail}
+            <div className="previewContent">
+              <div className="memoTitle">
+                Title : {memo.memoTitle}
+              </div>
+              <div className="memoDetails">
+                {memo.memoDetail}
+              </div>
             </div>
           </div>
         )

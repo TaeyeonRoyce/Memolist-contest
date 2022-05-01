@@ -104,20 +104,25 @@ function AddMemo() {
             <input type="checkbox" checked={secret}  onChange={(e) => checkSecretBox(e)} />
             <div>Secret Memo</div>
           </div>
-          <div className="memoTitleForm">
-            <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder="Memo Title"/>
+          <div className="addFormInputContainer">
+            <div className="memoTitleForm">
+              <div className="titleFormText">Title : </div>
+              <input type="text" onChange={changeMemoTitle} name="memoTitle" placeholder="Memo Title"/>
+            </div>
+            <div className="memoDetailForm">
+              <div className="detailFormText">Memo detail : </div>
+              <textarea type="text" onChange={changeMemoDetail} name="memoDetail" placeholder="..."/>
+            </div>
+            {secret ? (
+            <div className="memoPwd">
+              <div className="pwdFormText">Memo password :  </div>
+              <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder="password"/>
+            </div>) : (<div></div>)}
           </div>
-          <div className="memoDetailForm">
-            <input type="text" onChange={changeMemoDetail} name="memoDetail" placeholder="..."/>
-          </div>
-          {secret ? (
-          <div className="memoPwd">
-            <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder="password"/>
-          </div>) : (<div></div>)}
           <div className="buttonContainer">
             {added ? (
-              <div></div>
-            ) : ( <button type="submit" className="addTodo"> Add Memo </button> )}
+              <div className="noneDiv"></div>
+            ) : ( <button type="submit" className="addMemoSubmitBtn"> Add Memo </button> )}
             <Link to="/memo">
                 <button type="button" className="return"> Backward </button>
             </Link>

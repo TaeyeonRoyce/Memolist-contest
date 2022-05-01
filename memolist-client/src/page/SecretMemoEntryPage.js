@@ -37,14 +37,15 @@ function SecretMemoEntry({memo, setPass}) {
   }
 
   return (
-    <div className="memoDetailContainer">
+    <div className="memoPwdEnterContainer">
       <div className="memoPwd">
-        <h2>Enter Password</h2>
         <input type="text" onChange={changeMemoPwd} name="memoPwd" placeholder={pwdHolder}/>
       </div>
-      <div className="btnContainer">
+      <div className="buttonContainer">
         <button type="submit" className="enterBtn" onClick={checkPwd}> Enter </button>
-        <button type="button" className="return"> Backward </button>
+        <Link to="/memo">
+          <button type="button" className="return"> Backward </button>
+        </Link>
       </div>
     </div>
   )
